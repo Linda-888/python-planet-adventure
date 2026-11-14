@@ -6,7 +6,11 @@
 
 玩家写的是**真正的 Python**：代码在浏览器里通过 [Pyodide](https://pyodide.org) 运行，不用安装任何东西；报错会翻译成中文提示。
 
-## 怎么玩
+## 🎮 在线玩
+
+**<https://linda-888.github.io/python-planet-adventure/>** —— 打开就能玩，不用下载（首次加载需要几秒钟下载 Python 运行环境）。
+
+## 本地运行
 
 ```bash
 python3 -m http.server 8765
