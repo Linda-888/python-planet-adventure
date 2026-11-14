@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Python 星球探险</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 加载 Python 运行环境 -->
+<div id="loading" class="overlay">
+  <div class="card center">
+    <div class="big-emoji bob">🧑‍🚀</div>
+    <h2>正在准备 Python 星球…</h2>
+    <p class="muted">首次需要下载约 10 MB 的 Python 运行环境，之后会缓存。</p>
+    <p id="loading-status" class="muted"></p>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="left">
+    <button id="btn-map" class="ghost">🗺 地图</button>
+    <span id="chapter-name" class="chapter-name"></span>
+  </div>
+  <div id="node-dots" class="dots"></div>
+  <div class="right">
+    <button id="btn-codex" class="ghost">📖 知识图鉴 <span id="codex-count" class="pill">0</span></button>
+  </div>
+</header>
+
+<!-- 地图：全部章节 -->
+<section id="view-map" class="view">
+  <div class="map-head">
+    <h1>🪐 Python 星球探险</h1>
+    <p>沿着路一直往前走，碰到的每一颗<b>知识水晶</b>都是一个 Python 知识点：先看讲解、动手改示例，再做一个小练习，水晶就归你了。走完所有章节，就学完了整个 Python。</p>
+  </div>
+  <div id="chapter-grid" class="chapters"></div>
+</section>
+
+<!-- 探险场景 -->
+<section id="view-scene" class="view hidden">
+  <div id="scene" class="scene">
+    <div class="layer sky"></div>
+    <div id="stars" class="layer stars"></div>
+    <div id="hills" class="layer hills"></div>
+    <div id="road" class="layer road"></div>
+    <div id="nodes" class="nodes"></div>
+    <div id="hero" class="hero">
+      <div id="bubble" class="bubble hidden"></div>
+      <span class="hero-emoji">🧑‍🚀</span>
+    </div>
+  </div>
+  <div class="scene-controls">
+    <div id="scene-status" class="status"></div>
+    <button id="btn-walk" class="primary big">前进 →<kbd>→</kbd></button>
+  </div>
+</section>
+
+<!-- 遇到知识水晶：互动学习卡 -->
+<div id="encounter" class="overlay hidden">
+  <div class="card enc">
+    <div class="enc-head">
+      <div class="enc-title"><span id="enc-icon">🔮</span> <b id="enc-title"></b></div>
+      <div id="enc-steps" class="steps"></div>
+    </div>
+    <div id="enc-body" class="enc-body"></div>
+  </div>
+</div>
+
+<!-- 知识图鉴 -->
+<div id="codex" class="overlay hidden">
+  <div class="card codex">
+    <div class="enc-head">
+      <div class="enc-title"><b>📖 知识图鉴</b> <span class="muted">收集到的知识水晶，随时回来复习</span></div>
+      <button id="btn-codex-close" class="ghost">关闭</button>
+    </div>
+    <div id="codex-body" class="codex-body"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+<script src="runtime.js"></script>
+<script src="curriculum.js"></script>
+<!-- 每一章的内容，一章一个文件 -->
+<script src="chapters/basics.js"></script>
+<script src="chapters/conditions.js"></script>
+<script src="chapters/loops.js"></script>
+<script src="chapters/lists.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

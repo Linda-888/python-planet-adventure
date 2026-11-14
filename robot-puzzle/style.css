@@ -1,0 +1,172 @@
+:root {
+  --bg: #0b0f19;
+  --panel: #111827;
+  --panel2: #0f172a;
+  --border: #1f2937;
+  --text: #e5e7eb;
+  --muted: #8b95a7;
+  --accent: #38bdf8;
+  --accent2: #22c55e;
+  --warn: #f59e0b;
+  --err: #f87171;
+  --purple: #a78bfa;
+  --mono: ui-monospace, Menlo, Consolas, "SF Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.hidden { display: none !important; }
+
+/* ---- 顶栏 ---- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px; border-bottom: 1px solid var(--border);
+  background: var(--panel); position: sticky; top: 0; z-index: 5;
+}
+.brand { font-weight: 700; font-size: 18px; }
+.brand .sub { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 8px; }
+.progress { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.bar { width: 160px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+#progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .4s; }
+
+/* ---- 三栏布局 ---- */
+.layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 580px) minmax(380px, 1fr);
+  gap: 16px; padding: 16px 20px; max-width: 1500px; margin: 0 auto; align-items: start;
+}
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar ul { display: flex; flex-wrap: wrap; gap: 6px; }
+}
+
+/* ---- 关卡列表 ---- */
+.sidebar {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px;
+}
+/* 只有三栏布局时关卡列表才固定在视口里；窄屏时它排在最上面，固定会盖住下面的内容 */
+@media (min-width: 1101px) {
+  .sidebar { position: sticky; top: 70px; }
+}
+.sidebar h3 { margin: 4px 8px 10px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar li {
+  display: grid; grid-template-columns: 28px 1fr; grid-template-rows: auto auto; column-gap: 8px;
+  padding: 7px 10px; border-radius: 8px; cursor: pointer; line-height: 1.35;
+}
+.sidebar li:hover { background: var(--panel2); }
+.sidebar li.active { background: rgba(56, 189, 248, .12); outline: 1px solid rgba(56, 189, 248, .4); }
+.sidebar li.locked { opacity: .4; cursor: not-allowed; }
+.sidebar li .num {
+  grid-row: 1 / span 2; align-self: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+}
+.sidebar li.done .num { background: var(--accent2); color: #052e16; }
+.sidebar li .t { font-weight: 600; font-size: 14px; }
+.sidebar li .c { font-size: 12px; color: var(--muted); }
+.dev-toggle { display: block; margin: 12px 8px 4px; font-size: 12px; color: var(--muted); cursor: pointer; }
+
+/* ---- 舞台 ---- */
+.stage { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.stage-head { display: flex; align-items: baseline; gap: 10px; }
+.stage-head h2 { margin: 0; font-size: 20px; }
+.tag {
+  font-size: 12px; padding: 2px 8px; border-radius: 999px;
+  background: rgba(167, 139, 250, .15); color: var(--purple); border: 1px solid rgba(167, 139, 250, .35);
+}
+canvas#board {
+  display: block; background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+  width: 100%; max-width: 560px; aspect-ratio: 4 / 3;
+}
+.controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.controls label { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+button {
+  font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--panel); color: var(--text); cursor: pointer;
+}
+button:hover { border-color: #374151; }
+button:disabled { opacity: .5; cursor: default; }
+button.primary { background: var(--accent); color: #082f49; border-color: transparent; font-weight: 700; }
+button.primary:hover { filter: brightness(1.08); }
+button.link { background: none; border: none; color: var(--accent); padding: 4px 6px; font-size: 13px; }
+button.link:hover { text-decoration: underline; }
+kbd { font: 11px var(--mono); background: rgba(0, 0, 0, .25); padding: 1px 5px; border-radius: 4px; margin-left: 6px; }
+select { font: inherit; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; }
+
+/* ---- 输出面板 ---- */
+.console-wrap { background: var(--panel2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.console-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 12px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border);
+}
+.console {
+  font: 13px/1.6 var(--mono); padding: 10px 12px; min-height: 130px; max-height: 240px;
+  overflow: auto; white-space: pre-wrap; word-break: break-word;
+}
+.console .line { padding: 1px 0; }
+.console .ok { color: var(--accent2); }
+.console .err { color: var(--err); }
+.console .warn { color: var(--warn); }
+.console .muted { color: var(--muted); }
+.console .say { color: #fde68a; }
+
+/* ---- 右侧面板 ---- */
+.panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.card h3 { margin: 0 0 8px; font-size: 15px; }
+.card p { margin: 6px 0; }
+.goal { font-weight: 600; }
+.rules { font-size: 13px; color: var(--muted); white-space: pre-line; }
+.hint { background: rgba(245, 158, 11, .1); border-left: 3px solid var(--warn); padding: 8px 12px; border-radius: 6px; }
+
+.teach pre {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; overflow: auto; font: 13px/1.6 var(--mono); margin: 8px 0;
+}
+.teach code { background: rgba(56, 189, 248, .12); color: var(--accent); padding: 1px 5px; border-radius: 4px; font: 13px var(--mono); }
+.teach ul { padding-left: 20px; margin: 6px 0; }
+.teach li { margin: 2px 0; }
+
+/* ---- 编辑器 ---- */
+.editor-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.editor-head h3 { margin: 0; }
+.editor { display: flex; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.editor:focus-within { border-color: rgba(56, 189, 248, .5); }
+.gutter {
+  width: 40px; flex: none; padding: 10px 8px 10px 0; text-align: right; color: #4b5569;
+  font: 14px/1.5 var(--mono); user-select: none; overflow: hidden; background: rgba(0, 0, 0, .2);
+}
+.gutter .ln.err { color: var(--err); font-weight: 700; }
+#code {
+  flex: 1; min-width: 0; min-height: 260px; border: 0; outline: 0; resize: vertical;
+  background: transparent; color: var(--text); padding: 10px 12px;
+  font: 14px/1.5 var(--mono); white-space: pre; overflow: auto; tab-size: 4;
+}
+
+.commands { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.commands li { display: grid; grid-template-columns: 150px 1fr; gap: 10px; font-size: 13px; align-items: baseline; }
+.commands code { color: var(--accent); font: 13px var(--mono); }
+.commands span { color: var(--muted); }
+
+/* ---- 遮罩层 ---- */
+.overlay {
+  position: fixed; inset: 0; background: rgba(5, 8, 15, .85);
+  display: flex; align-items: center; justify-content: center; z-index: 50; backdrop-filter: blur(4px);
+}
+.loading-box, .win-box {
+  text-align: center; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px 40px; max-width: 440px; margin: 16px;
+}
+.loading-box h2, .win-box h2 { margin: 8px 0; }
+.robot-big, .win-emoji { font-size: 56px; line-height: 1.2; }
+.robot-big { animation: bob 1.4s ease-in-out infinite; display: inline-block; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.muted { color: var(--muted); font-size: 13px; }
+.win-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
